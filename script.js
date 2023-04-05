@@ -18,8 +18,13 @@ function update(time) {
 
   if (lastTime != null) {
     // update code
+
+    // Get new time
     const deltaTime = time - lastTime;
     elapsedTime += deltaTime;
+
+    // If stopwatch has maxed out time then reset
+    if (elapsedTime >= 360000000) resetWatch();
 
     drawUpdate();
   }
@@ -28,13 +33,13 @@ function update(time) {
 }
 
 function drawUpdate() {
-  const hours = Math.floor((elapsedTime / 3600000) % 24);
+  const hours = Math.floor(elapsedTime / 3600000);
   const minutes = Math.floor((elapsedTime / 60000) % 60);
   const seconds = Math.floor((elapsedTime / 1000) % 60);
   const milliseconds = Math.floor((elapsedTime % 1000) / 10);
-
   let watchTextString;
 
+  // Dont display hours if not needed
   if (hours >= 1) {
     watchTextString = `${hours.toString().padStart(2, "0")}:${minutes
       .toString()
@@ -51,6 +56,7 @@ function drawUpdate() {
       .substring(0, 2)}`;
   }
 
+  // set time HTMLElement text to new time
   watchText.textContent = watchTextString;
 }
 
